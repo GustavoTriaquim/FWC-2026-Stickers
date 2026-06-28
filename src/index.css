@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  /* Cores de fundo */
+  --color-bg-base: #0a0a0b;
+  --color-bg-card: #161618;
+  --color-bg-elevated: #1f1f22;
+  --color-bg-slot: #131314;
+
+  /* Cores oficiais da Copa */
+  --color-fifa-green: #00a94f;
+  --color-fifa-gold: #c9a646;
+  --color-fifa-red: #c8102e;
+
+  /* Texto */
+  --color-text-primary: #f2f2f0;
+  --color-text-muted: #8a8a8e;
+  --color-text-dim: #54545a;
+
+  /* Bordas */
+  --color-border-subtle: #2a2a2d;
+
+  /* Fontes */
+  --font-display: "Archivo Black", sans-serif;
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+body {
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+}
