@@ -3,6 +3,7 @@ import { getTeamById } from "../data/teams";
 import { buildTeamStickers } from "../data/stickers";
 import { useAlbum } from "../context/AlbumContext";
 import StickerCard from "../components/StickerCard";
+import AppHeader from "../components/AppHeader";
 
 function TeamStickers() {
   const { mode, teamId } = useParams();
@@ -23,62 +24,7 @@ function TeamStickers() {
   return (
     <div className="min-h-screen bg-bg-base flex flex-col">
       {/* Cabeçalho com a cor do time como destaque */}
-      <header className="pt-6 pb-4 px-4">
-        <Link
-          to={`/${mode}`}
-          className="text-text-muted text-sm flex items-center gap-1 hover:text-text-primary transition-colors mb-3"
-        >
-          <svg
-            className="w-4 h-4"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path
-              d="M15 18l-6-6 6-6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          Voltar
-        </Link>
-
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-3xl leading-none">{team.flag}</span>
-            <div>
-              <h1 className="font-display text-xl text-text-primary uppercase">
-                {team.name}
-              </h1>
-              <p className="font-mono text-text-muted text-sm">
-                Grupo {team.group} · {team.code}
-              </p>
-            </div>
-          </div>
-          {!isRepetidas && (
-            <span
-              className="font-mono text-sm px-2 py-1 rounded-md"
-              style={{ color: team.color, backgroundColor: `${team.color}1a` }}
-            >
-              {ownedCount}/{allStickers.length}
-            </span>
-          )}
-        </div>
-
-        {/* Barra de progresso fininha, usando a cor oficial do time */}
-        {!isRepetidas && (
-          <div className="w-full h-1 bg-bg-card rounded-full mt-3 overflow-hidden">
-            <div
-              className="h-full rounded-full transition-all duration-300"
-              style={{
-                width: `${(ownedCount / allStickers.length) * 100}%`,
-                backgroundColor: team.color,
-              }}
-            />
-          </div>
-        )}
-      </header>
+      <AppHeader />
 
       {/* Grid de figurinhas */}
       <main className="flex-1 px-4 pb-8">
@@ -93,7 +39,6 @@ function TeamStickers() {
                 key={sticker.id}
                 stickerId={sticker.id}
                 label={sticker.label}
-                mode={mode}
               />
             ))}
           </div>

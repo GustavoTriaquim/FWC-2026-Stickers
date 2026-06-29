@@ -2,6 +2,49 @@ import { useState, useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Link } from "react-router-dom";
 import { getGroupPairs, getTeamsByGroup } from "../data/teams";
+import { buildTeamStickers } from "../data/stickers";
+import { useAlbum } from "../context/AlbumContext";
+import ProgressBar from "./ProgressBar";
+
+function TeamRow({ team, mode }) {
+  const { countOwned, countExtras } = useAlbum();
+  const stickers = buildTeamStickers(team.id);
+  const isRepetidas = mode === "repetidas";
+
+  const owned = countOwned(stickers);
+  const extras = countExtras(stickers);
+
+  return (
+    <Link
+      to={`/${mode}/time/${team.id}`}
+      className="flex items-center gap-3 bg-bg-card border border-border-subtle
+                 rounded-xl px-3 py-2.5 hover:bg-bg-elevated hover:border-text-dim
+                 transition-colors duration-150"
+    >
+      <span className="text-2xl leading-none shrink-0">{team.flag}</span>
+      <div className="min-w-0 flex-1">
+        <p className="text-text-primary text-sm font-medium truncate">
+          {team.name}
+        </p>
+        {isRepetidas ? (
+          <p className="font-mono text-copa-gold text-xs mt-0.5">
+            {extras} repetida{extras !== 1 ? "s" : ""}
+          </p>
+        ) : (
+          <div className="mt-1">
+            <ProgressBar
+              value={owned}
+              total={stickers.length}
+              color={team.color}
+              height="h-1"
+              showPercent={false}
+            />
+          </div>
+        )}
+      </div>
+    </Link>
+  );
+}
 
 function GroupColumn({ groupLetter, mode }) {
   const teams = getTeamsByGroup(groupLetter);
@@ -13,21 +56,7 @@ function GroupColumn({ groupLetter, mode }) {
       </h3>
       <div className="flex flex-col gap-2">
         {teams.map((team) => (
-          <Link
-            key={team.id}
-            to={`/${mode}/time/${team.id}`}
-            className="flex items-center gap-3 bg-bg-card border border-border-subtle
-                       rounded-xl px-3 py-3 hover:bg-bg-elevated hover:border-text-dim
-                       transition-colors duration-150"
-          >
-            <span className="text-2xl leading-none">{team.flag}</span>
-            <div className="min-w-0">
-              <p className="text-text-primary text-sm font-medium truncate">
-                {team.name}
-              </p>
-              <p className="font-mono text-text-dim text-xs">{team.code}</p>
-            </div>
-          </Link>
+          <TeamRow key={team.id} team={team} mode={mode} />
         ))}
       </div>
     </div>
@@ -56,16 +85,15 @@ function GroupCarousel({ mode }) {
   }, [emblaApi]);
 
   return (
-    <div className="w-full flex flex-col flex-1">
-      {/* Viewport do carrossel */}
+    <div className="w-full max-w-3xl mx-auto flex flex-col flex-1">
       <div className="overflow-hidden flex-1" ref={emblaRef}>
         <div className="flex h-full">
           {pairs.map(([groupA, groupB]) => (
             <div
               key={`${groupA}-${groupB}`}
-              className="flex-[0_0_100%] min-w-0 px-3"
+              className="flex-[0_0_100%] min-w-0 px-1"
             >
-              <div className="flex gap-4 h-full">
+              <div className="flex gap-3 h-full">
                 <GroupColumn groupLetter={groupA} mode={mode} />
                 <GroupColumn groupLetter={groupB} mode={mode} />
               </div>
@@ -74,7 +102,6 @@ function GroupCarousel({ mode }) {
         </div>
       </div>
 
-      {/* Controles: setas + indicadores */}
       <div className="flex items-center justify-center gap-4 py-4">
         <button
           onClick={scrollPrev}

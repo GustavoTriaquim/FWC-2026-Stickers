@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { specialStickers } from "../data/specials";
 import { useAlbum } from "../context/AlbumContext";
 import StickerCard from "../components/StickerCard";
+import AppHeader from "../components/AppHeader";
 
 function SpecialStickers() {
   const { mode } = useParams();
@@ -14,43 +15,7 @@ function SpecialStickers() {
   return (
     <div className="min-h-screen bg-bg-base flex flex-col">
       {/* Cabeçalho */}
-      <header className="pt-6 pb-4 px4">
-        <Link
-          to={`/${mode}`}
-          className="text-text-muted text-sm flex items-center gap-1 hover:text-text-primary transition-colors mb-3"
-        >
-          <svg
-            className="w-4 h-4"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path
-              d="M15 18l-6-6 6-6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          Voltar
-        </Link>
-
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="font-display text-xl text-text-primary uppercase">
-              FWC
-            </h1>
-            <p text-text-muted text-sm>
-              Figurinhas especiais
-            </p>
-          </div>
-          {!isRepetidas && (
-            <span className="font-mono text-fifa-gold text-sm">
-              {ownedCount}/{specialStickers.length}
-            </span>
-          )}
-        </div>
-      </header>
+      <AppHeader />
 
       {/* Grid de figurinhas */}
       <main className="flex-1 px-4 pb-8">
@@ -65,7 +30,6 @@ function SpecialStickers() {
                 key={sticker.id}
                 stickerId={sticker.id}
                 label={sticker.label}
-                mode={mode}
               />
             ))}
           </div>
