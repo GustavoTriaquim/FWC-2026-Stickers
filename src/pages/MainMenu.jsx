@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import GroupCarousel from "../components/GroupCarousel";
 import AppHeader from "../components/AppHeader";
 import ProgressBar from "../components/ProgressBar";
-import { useAlbum } from "../context/AlbumContext";
+import { useAlbum } from "../context/Album/AlbumContext";
 import { specialStickers } from "../data/specials";
 import PageTransition from "../components/PageTransition";
 import SearchBar from "../components/SearchBar";

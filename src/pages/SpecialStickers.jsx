@@ -1,11 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { specialStickers } from "../data/specials";
-import { useAlbum } from "../context/AlbumContext";
+import { useAlbum } from "../context/Album/AlbumContext";
 import StickerCard from "../components/StickerCard";
 import AppHeader from "../components/AppHeader";
 import LoadingScreen from "../components/LoadingScreen";
 import PageTransition from "../components/PageTransition";
 import EmptyState from "../components/EmptyState";
+import SequenceNav from "../components/SequenceNav";
 
 function SpecialStickers() {
   const { mode } = useParams();
@@ -43,6 +44,10 @@ function SpecialStickers() {
             </div>
           )}
         </main>
+
+        <div className="pb-6">
+          <SequenceNav type="fwc" id="fwc" />
+        </div>
       </div>
     </PageTransition>
   );

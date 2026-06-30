@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAlbum } from "../context/AlbumContext";
+import { useAlbum } from "../context/Album/AlbumContext";
 import ProgressBar from "../components/ProgressBar";
 import ThemeToggle from "../components/ThemeToggle";
 import PageTransition from "../components/PageTransition";

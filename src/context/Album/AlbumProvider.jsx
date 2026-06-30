@@ -6,10 +6,10 @@ import {
   increment as fsIncrement,
 } from "firebase/firestore";
 import { AlbumContext } from "./AlbumContext";
-import { db } from "../firebase";
-import { allTeams } from "../data/teams";
-import { buildTeamStickers } from "../data/stickers";
-import { specialStickers } from "../data/specials";
+import { db } from "../../firebase";
+import { allTeams } from "../../data/teams";
+import { buildTeamStickers } from "../../data/stickers";
+import { specialStickers } from "../../data/specials";
 
 // Referência ao documento único do álbum no Firestore.
 const albumRef = doc(db, "albums", "album-principal");

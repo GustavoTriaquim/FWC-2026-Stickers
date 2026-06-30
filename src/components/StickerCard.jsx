@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useAlbum } from "../context/AlbumContext";
+import { useAlbum } from "../context/Album/AlbumContext";
 
 function StickerCard({ stickerId, label, accentColor = "#00a94f" }) {
   const { getCount, increment, decrement } = useAlbum();
@@ -52,7 +52,7 @@ function StickerCard({ stickerId, label, accentColor = "#00a94f" }) {
         !isEmpty
           ? {
               backgroundColor: `${accentColor}18`,
-              borderColor: `${accentColor}60`,
+              borderColor: `${accentColor}aa`,
             }
           : {}
       }

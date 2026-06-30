@@ -1,3 +1,5 @@
+import { specialStickers } from "./specials";
+
 // Times agrupados por grupo (A-L), com seus códigos oficiais de figurinha.
 export const groups = {
   A: [
@@ -126,7 +128,7 @@ export const groups = {
       code: "GER",
       name: "Alemanha",
       flag: "🇩🇪",
-      color: "#000000",
+      color: "#3a3a3a",
     },
     {
       id: "cuw",

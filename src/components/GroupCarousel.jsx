@@ -1,9 +1,10 @@
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Link } from "react-router-dom";
 import { getGroupPairs, getTeamsByGroup } from "../data/teams";
 import { buildTeamStickers } from "../data/stickers";
-import { useAlbum } from "../context/AlbumContext";
+import { useAlbum } from "../context/Album/AlbumContext";
+import { useCarouselPosition } from "../context/Carousel/CarouselContext";
 import ProgressBar from "./ProgressBar";
 
 function TeamRow({ team, mode }) {
@@ -27,7 +28,7 @@ function TeamRow({ team, mode }) {
           {team.name}
         </p>
         {isRepetidas ? (
-          <p className="font-mono text-fifa-gold text-xs mt-0.5">
+          <p className="font-mono text-copa-gold text-xs mt-0.5">
             {extras} repetida{extras !== 1 ? "s" : ""}
           </p>
         ) : (
@@ -65,8 +66,17 @@ function GroupColumn({ groupLetter, mode }) {
 
 function GroupCarousel({ mode }) {
   const pairs = getGroupPairs();
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const { slideIndex, updateSlideIndex } = useCarouselPosition();
+
+  // Captura a posição salva apenas UMA VEZ, no momento da montagem do componente.
+  // useRef garante que esse valor não muda depois, mesmo que slideIndex mude
+  // (evita reinicializar o Embla a cada troca de slide, o que matava a animação).
+  const initialIndex = useRef(slideIndex);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    startIndex: initialIndex.current,
+  });
 
   const scrollPrev = useCallback(
     () => emblaApi && emblaApi.scrollPrev(),
@@ -79,10 +89,10 @@ function GroupCarousel({ mode }) {
 
   useEffect(() => {
     if (!emblaApi) return;
-    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
+    const onSelect = () => updateSlideIndex(emblaApi.selectedScrollSnap());
     emblaApi.on("select", onSelect);
     onSelect();
-  }, [emblaApi]);
+  }, [emblaApi, updateSlideIndex]);
 
   return (
     <div className="w-full max-w-3xl mx-auto flex flex-col flex-1">
@@ -105,9 +115,8 @@ function GroupCarousel({ mode }) {
       <div className="flex items-center justify-center gap-4 py-4">
         <button
           onClick={scrollPrev}
-          disabled={selectedIndex === 0}
           className="p-2 rounded-full bg-bg-card border border-border-subtle
-                     disabled:opacity-30 hover:bg-bg-elevated transition-colors"
+                     hover:bg-bg-elevated transition-colors"
           aria-label="Grupos anteriores"
         >
           <svg
@@ -130,7 +139,7 @@ function GroupCarousel({ mode }) {
             <span
               key={index}
               className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                index === selectedIndex ? "bg-fifa-green" : "bg-border-subtle"
+                index === slideIndex ? "bg-copa-green" : "bg-border-subtle"
               }`}
             />
           ))}
@@ -138,9 +147,8 @@ function GroupCarousel({ mode }) {
 
         <button
           onClick={scrollNext}
-          disabled={selectedIndex === pairs.length - 1}
           className="p-2 rounded-full bg-bg-card border border-border-subtle
-                     disabled:opacity-30 hover:bg-bg-elevated transition-colors"
+                     hover:bg-bg-elevated transition-colors"
           aria-label="Próximos grupos"
         >
           <svg

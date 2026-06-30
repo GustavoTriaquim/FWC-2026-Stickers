@@ -1,12 +1,13 @@
 import { Link, useParams, Navigate } from "react-router-dom";
 import { getTeamById } from "../data/teams";
 import { buildTeamStickers } from "../data/stickers";
-import { useAlbum } from "../context/AlbumContext";
+import { useAlbum } from "../context/Album/AlbumContext";
 import StickerCard from "../components/StickerCard";
 import AppHeader from "../components/AppHeader";
 import LoadingScreen from "../components/LoadingScreen";
 import PageTransition from "../components/PageTransition";
 import EmptyState from "../components/EmptyState";
+import SequenceNav from "../components/SequenceNav";
 
 function TeamStickers() {
   const { mode, teamId } = useParams();
@@ -51,6 +52,10 @@ function TeamStickers() {
             </div>
           )}
         </main>
+
+        <div className="pb-6">
+          <SequenceNav type="team" id={teamId} />
+        </div>
       </div>
     </PageTransition>
   );
