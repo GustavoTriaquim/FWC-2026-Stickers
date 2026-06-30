@@ -38,7 +38,7 @@ function SpecialStickers() {
                   key={sticker.id}
                   stickerId={sticker.id}
                   label={sticker.label}
-                  accentColor="f1f1f1"
+                  accentColor="#f1f1f1"
                 />
               ))}
             </div>

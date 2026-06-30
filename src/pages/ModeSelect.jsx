@@ -3,6 +3,7 @@ import { useAlbum } from "../context/Album/AlbumContext";
 import ProgressBar from "../components/ProgressBar";
 import ThemeToggle from "../components/ThemeToggle";
 import PageTransition from "../components/PageTransition";
+import ExportButton from "../components/ExportButton";
 
 function ModeSelect() {
   const { getAlbumStats } = useAlbum();
@@ -102,6 +103,10 @@ function ModeSelect() {
             </div>
           </Link>
         </main>
+
+        <div className="px-4 pb-6">
+          <ExportButton />
+        </div>
       </div>
     </PageTransition>
   );

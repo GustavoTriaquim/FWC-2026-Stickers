@@ -64,7 +64,7 @@ function StickerCard({ stickerId, label, accentColor = "#00a94f" }) {
           className="absolute -top-1.5 -right-1.5 text-bg-base text-[10px] font-bold font-mono px-1.5 py-0.5 rounded-full"
           style={{
             backgroundColor:
-              accentColor === "#ffffff" ? "#c9a646" : accentColor,
+              accentColor === "#f1f1f1" ? "#c9a646" : accentColor,
           }}
         >
           {extraCount}x
