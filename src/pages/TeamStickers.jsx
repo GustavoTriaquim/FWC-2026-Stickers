@@ -4,10 +4,11 @@ import { buildTeamStickers } from "../data/stickers";
 import { useAlbum } from "../context/AlbumContext";
 import StickerCard from "../components/StickerCard";
 import AppHeader from "../components/AppHeader";
+import LoadingScreen from "../components/LoadingScreen";
 
 function TeamStickers() {
   const { mode, teamId } = useParams();
-  const { filterByMode, countOwned } = useAlbum();
+  const { filterByMode, countOwned, isLoading } = useAlbum();
 
   const team = getTeamById(teamId);
 
@@ -15,6 +16,8 @@ function TeamStickers() {
   if (!team) {
     return <Navigate to={`/${mode}`} replace />;
   }
+
+  if (isLoading) return <LoadingScreen />;
 
   const allStickers = buildTeamStickers(teamId);
   const visibleStickers = filterByMode(allStickers, mode);

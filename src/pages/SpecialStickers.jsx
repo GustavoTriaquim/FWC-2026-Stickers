@@ -3,14 +3,17 @@ import { specialStickers } from "../data/specials";
 import { useAlbum } from "../context/AlbumContext";
 import StickerCard from "../components/StickerCard";
 import AppHeader from "../components/AppHeader";
+import LoadingScreen from "../components/LoadingScreen";
 
 function SpecialStickers() {
   const { mode } = useParams();
-  const { filterByMode, countOwned } = useAlbum();
+  const { filterByMode, countOwned, isLoading } = useAlbum();
 
   const visibleStickers = filterByMode(specialStickers, mode);
   const ownedCount = countOwned(specialStickers);
   const isRepetidas = mode === "repetidas";
+
+  if (isLoading) return <LoadingScreen />;
 
   return (
     <div className="min-h-screen bg-bg-base flex flex-col">

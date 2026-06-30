@@ -6,7 +6,11 @@ import TeamStickers from "./pages/TeamStickers";
 import NotFound from "./pages/NotFound";
 import RequireValidMode from "./components/RequireValidMode";
 
+import { db } from "./firebase";
+
 function App() {
+  console.log("Firestore conectado:", db);
+
   return (
     <Routes>
       <Route path="/" element={<ModeSelect />} />

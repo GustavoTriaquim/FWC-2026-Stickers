@@ -1,31 +1,67 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
+import {
+  doc,
+  onSnapshot,
+  updateDoc,
+  increment as fsIncrement,
+} from "firebase/firestore";
 import { AlbumContext } from "./AlbumContext";
+import { db } from "../firebase";
 import { allTeams } from "../data/teams";
 import { buildTeamStickers } from "../data/stickers";
 import { specialStickers } from "../data/specials";
 
+// Referência ao documento único do álbum no Firestore.
+const albumRef = doc(db, "albums", "album-principal");
+
 export function AlbumProvider({ children }) {
-  const [counts, setCounts] = useState({});
+  // counts: espelho local do campo "counts" do documento no Firestore.
+  // Começa como null (ainda não carregou) e depois vira um objeto { [id]: number }.
+  const [counts, setCounts] = useState(null);
 
-  const getCount = useCallback((stickerId) => counts[stickerId] || 0, [counts]);
+  // Abre a conexão em tempo real com o Firestore assim que o Provider monta.
+  // onSnapshot chama o callback imediatamente com os dados atuais, e depois
+  // toda vez que o documento mudar (de qualquer dispositivo).
+  useEffect(() => {
+    const unsubscribe = onSnapshot(albumRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.data();
+        setCounts(data.counts || {});
+      }
+    });
 
-  const increment = useCallback((stickerId) => {
-    setCounts((prev) => ({
-      ...prev,
-      [stickerId]: (prev[stickerId] || 0) + 1,
-    }));
+    // Fecha a conexão quando o Provider desmonta (cleanup padrão do useEffect).
+    return () => unsubscribe();
   }, []);
 
-  const decrement = useCallback((stickerId) => {
-    setCounts((prev) => {
-      const current = prev[stickerId] || 0;
-      if (current <= 0) return prev;
-      return { ...prev, [stickerId]: current - 1 };
+  const getCount = useCallback(
+    (stickerId) => (counts ? counts[stickerId] || 0 : 0),
+    [counts],
+  );
+
+  // increment: usa o fsIncrement do Firestore (operação atômica no servidor).
+  // Isso garante que dois usuários editando ao mesmo tempo não se conflitam.
+  const increment = useCallback(async (stickerId) => {
+    await updateDoc(albumRef, {
+      [`counts.${stickerId}`]: fsIncrement(1),
     });
   }, []);
 
+  // decrement: mesma coisa, mas subtrai 1 — com um guard pra não ir abaixo de 0.
+  const decrement = useCallback(
+    async (stickerId) => {
+      const current = counts ? counts[stickerId] || 0 : 0;
+      if (current <= 0) return;
+      await updateDoc(albumRef, {
+        [`counts.${stickerId}`]: fsIncrement(-1),
+      });
+    },
+    [counts],
+  );
+
   const filterByMode = useCallback(
     (stickerList, mode) => {
+      if (!counts) return [];
       if (mode === "repetidas") {
         return stickerList.filter((s) => (counts[s.id] || 0) >= 2);
       }
@@ -35,22 +71,24 @@ export function AlbumProvider({ children }) {
   );
 
   const countOwned = useCallback(
-    (stickerList) => stickerList.filter((s) => (counts[s.id] || 0) >= 1).length,
+    (stickerList) => {
+      if (!counts) return 0;
+      return stickerList.filter((s) => (counts[s.id] || 0) >= 1).length;
+    },
     [counts],
   );
 
-  // Soma quantas cópias "de sobra" existem numa lista de stickers (ex: as 20 de um time).
   const countExtras = useCallback(
-    (stickerList) =>
-      stickerList.reduce((sum, s) => {
+    (stickerList) => {
+      if (!counts) return 0;
+      return stickerList.reduce((sum, s) => {
         const count = counts[s.id] || 0;
         return count >= 2 ? sum + (count - 1) : sum;
-      }, 0),
+      }, 0);
+    },
     [counts],
   );
 
-  // Lista de TODOS os ids de figurinha do álbum inteiro (48 times × 20 + 20 FWC = 1000).
-  // useMemo porque essa lista nunca muda — não precisa recalcular a cada render.
   const allStickerIds = useMemo(() => {
     const teamIds = allTeams.flatMap((team) =>
       buildTeamStickers(team.id).map((s) => s.id),
@@ -59,9 +97,10 @@ export function AlbumProvider({ children }) {
     return [...teamIds, ...fwcIds];
   }, []);
 
-  // Estatísticas gerais do álbum: total de figurinhas únicas que você tem,
-  // total possível, e quantas cópias de sobra existem (somando todas as repetidas).
   const getAlbumStats = useCallback(() => {
+    if (!counts)
+      return { owned: 0, total: allStickerIds.length, totalExtras: 0 };
+
     let owned = 0;
     let totalExtras = 0;
 
@@ -87,6 +126,7 @@ export function AlbumProvider({ children }) {
     countOwned,
     countExtras,
     getAlbumStats,
+    isLoading: counts === null,
   };
 
   return (
