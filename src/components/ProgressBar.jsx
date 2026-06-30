@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 function ProgressBar({
   value,
   total,
-  color = "var(--color-copa-green)",
+  color = "var(--color-fifa-green)",
   height = "h-1.5",
   showPercent = true,
 }) {

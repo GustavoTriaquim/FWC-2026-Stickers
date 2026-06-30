@@ -68,7 +68,7 @@ function ModeSelect() {
 
           <Link
             to="/repetidas"
-            className="group w-full md:flex-1 max-w-sm md:max-w-none rounded-2xl bg-bg-card border border-border-subtle flex items-center md:flex-col gap-4 md:gap-3 hover:bg-bg-elevated hover:border-copa-gold/40 transition-colors duration-200 px-5 py-5 md:py-8"
+            className="group w-full md:flex-1 max-w-sm md:max-w-none rounded-2xl bg-bg-card border border-border-subtle flex items-center md:flex-col gap-4 md:gap-3 hover:bg-bg-elevated hover:border-fifa-gold/40 transition-colors duration-200 px-5 py-5 md:py-8"
           >
             <svg
               className="w-10 h-10 md:w-12 md:h-12 text-fifa-gold shrink-0"

@@ -30,11 +30,11 @@ function MainMenu() {
           <Link
             to={`/${mode}/fwc`}
             className="group flex items-center gap-4 rounded-2xl bg-bg-card border border-border-subtle
-                     hover:bg-bg-elevated hover:border-copa-gold/40
+                     hover:bg-bg-elevated hover:border-fifa-gold/40
                      transition-colors duration-200 px-5 py-4"
           >
             <svg
-              className="w-9 h-9 text-copa-gold shrink-0"
+              className="w-9 h-9 text-fifa-gold shrink-0"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -56,7 +56,7 @@ function MainMenu() {
                 FWC
               </h2>
               {isRepetidas ? (
-                <p className="font-mono text-copa-gold text-xs mt-0.5">
+                <p className="font-mono text-fifa-gold text-xs mt-0.5">
                   {fwcExtras} repetida{fwcExtras !== 1 ? "s" : ""}
                 </p>
               ) : (
@@ -64,7 +64,7 @@ function MainMenu() {
                   <ProgressBar
                     value={fwcOwned}
                     total={specialStickers.length}
-                    color="var(--color-copa-gold)"
+                    color="var(--color-fifa-gold)"
                     height="h-1"
                     showPercent={false}
                   />
@@ -87,7 +87,7 @@ function MainMenu() {
           <ProgressBar
             value={albumOwned}
             total={albumTotal}
-            color="var(--color-copa-blue)"
+            color="var(--color-fifa-blue)"
           />
           <p className="font-mono text-text-muted text-xs mt-1.5 text-center">
             {albumOwned}/{albumTotal} figurinhas no álbum

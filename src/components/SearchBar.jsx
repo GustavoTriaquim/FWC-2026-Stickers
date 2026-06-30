@@ -54,7 +54,7 @@ function SearchBar() {
           placeholder="Buscar por seleção, código ou número..."
           className="w-full bg-bg-card border border-border-subtle rounded-xl
                      pl-9 pr-3 py-2.5 text-sm text-text-primary placeholder:text-text-dim
-                     focus:outline-none focus:border-copa-green/50 transition-colors"
+                     focus:outline-none focus:border-fifa-green/50 transition-colors"
         />
       </div>
 

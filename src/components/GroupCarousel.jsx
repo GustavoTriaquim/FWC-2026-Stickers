@@ -27,7 +27,7 @@ function TeamRow({ team, mode }) {
           {team.name}
         </p>
         {isRepetidas ? (
-          <p className="font-mono text-copa-gold text-xs mt-0.5">
+          <p className="font-mono text-fifa-gold text-xs mt-0.5">
             {extras} repetida{extras !== 1 ? "s" : ""}
           </p>
         ) : (
@@ -130,7 +130,7 @@ function GroupCarousel({ mode }) {
             <span
               key={index}
               className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                index === selectedIndex ? "bg-copa-green" : "bg-border-subtle"
+                index === selectedIndex ? "bg-fifa-green" : "bg-border-subtle"
               }`}
             />
           ))}

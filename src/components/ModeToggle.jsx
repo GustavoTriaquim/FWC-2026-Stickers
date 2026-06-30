@@ -8,7 +8,7 @@ function ModeToggle() {
 
   const isRepetidas = mode === "repetidas";
   const modeLabel = isRepetidas ? "Repetidas" : "Coleção";
-  const modeColor = isRepetidas ? "text-copa-gold" : "text-copa-green";
+  const modeColor = isRepetidas ? "text-fifa-gold" : "text-fifa-green";
 
   const handleToggle = () => {
     const newMode = isRepetidas ? "colecao" : "repetidas";
