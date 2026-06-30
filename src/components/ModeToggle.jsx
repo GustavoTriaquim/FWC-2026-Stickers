@@ -12,7 +12,7 @@ function ModeToggle() {
 
   const handleToggle = () => {
     const newMode = isRepetidas ? "colecao" : "repetidas";
-    navigate(swapMode(location.pathname, newMode));
+    navigate(swapMode(location.pathname, newMode), { replace: true });
   };
 
   return (

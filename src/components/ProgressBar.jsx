@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 function ProgressBar({
   value,
   total,
@@ -13,9 +15,12 @@ function ProgressBar({
       <div
         className={`flex-1 ${height} bg-bg-card rounded-full overflow-hidden`}
       >
-        <div
-          className="h-full rounded-full transition-all duration-300"
-          style={{ width: `${percent}%`, backgroundColor: color }}
+        <motion.div
+          className="h-full rounded-full"
+          style={{ backgroundColor: color }}
+          initial={{ width: 0 }}
+          animate={{ width: `${percent}%` }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         />
       </div>
       {showPercent && (
